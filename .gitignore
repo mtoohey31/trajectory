@@ -1,0 +1,5 @@
+**/.DS_Store
+server/target
+web/node_modules
+web/public/build
+web/.pnpm-store

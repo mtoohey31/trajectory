@@ -1,0 +1,8 @@
+.gitignore
+.git
+Dockerfile
+Dockerfile.dev
+.dockerignore
+.pnpm-store
+node_modules
+public/build

@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  proxy:
+    image: traefik:v2.4
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker"
+      - "--entrypoints.http.address=:80"
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        read_only: true
+    networks:
+      - traefik
+    depends_on:
+      - web
+    labels:
+      - "traefik.enable=false"
+  web:
+    container_name: trajectory-web-dev
+    image: trajectory-web-dev
+    build:
+      context: ./web/
+      dockerfile: ./Dockerfile.dev
+    ports:
+      - 35729:35729
+    volumes:
+      - ./web:/usr/src/trajectory-web
+    networks:
+      - traefik
+    depends_on:
+      - server
+    labels:
+      - "traefik-enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.services.web-dev.loadbalancer.server.port=5000"
+      - "traefik.http.routers.web-dev.entrypoints=http"
+      - "traefik.http.routers.web-dev.rule=Host(`localhost`)"
+  server:
+    container_name: trajectory-server-dev
+    image: trajectory-server-dev
+    build:
+      context: ./server/
+      dockerfile: ./Dockerfile.dev
+    volumes:
+      - ./server:/usr/src/trajectory-server
+    networks:
+      - traefik
+      - db
+    depends_on:
+      - db
+    labels:
+      - "traefik-enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.services.server-dev.loadbalancer.server.port=8080"
+      - "traefik.http.routers.server-dev.entrypoints=http"
+      - "traefik.http.routers.server-dev.rule=Host(`localhost`)"
+      - "traefik.http.routers.server-dev.rule=PathPrefix(`/api`)"
+      - "traefik.http.middlewares.strip-api.stripprefix.prefixes=/api"
+      - "traefik.http.routers.server-dev.middlewares=strip-api"
+  db:
+    image: "postgres:latest"
+    container_name: trajectory-db-dev
+    environment:
+      POSTGRES_USER: trajectory-server
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_DB: trajectory-server
+    networks:
+      - db
+    labels:
+      - "traefik.enable=false"
+
+networks:
+  traefik:
+  db:
