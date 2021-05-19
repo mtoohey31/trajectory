@@ -1,6 +1,6 @@
 # Trajectory
 
-A full-stack grade tracking app with end-to-end encryption. This project is currently in a very alpha state and is not yet ready for real-world use.
+A full stack grade tracking app with end-to-end encryption. This project is currently in a very alpha state and is not yet ready for real-world use.
 
 ## Usage
 
