@@ -1,11 +1,13 @@
-version: '3.8'
+version: '3.9'
 
 services:
   proxy:
+    container_name: trajectory-proxy-dev
     image: traefik:v2.4
     command:
       - "--api.insecure=true"
       - "--providers.docker"
+      - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.http.address=:80"
     ports:
       - 80:80
