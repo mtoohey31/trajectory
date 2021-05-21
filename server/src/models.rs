@@ -6,26 +6,13 @@ use serde::{Deserialize, Serialize};
 pub struct User {
     pub username: String,
     pub double_hashed_passwd: String,
-    pub hash_salt: String,
-    pub data: Option<String>,
-    pub vault_salt: String,
+    pub hash_salt: Vec<u8>,
+    pub data: Option<Vec<u8>>,
+    pub vault_salt: Vec<u8>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UserCreds {
     pub username: String,
     pub hashed_passwd: String,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct UserDataUpdate {
-    pub username: String,
-    pub hashed_passwd: String,
-    pub new_data: String,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct UserData {
-    pub data: Option<String>,
-    pub vault_salt: String,
 }
