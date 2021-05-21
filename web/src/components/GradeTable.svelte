@@ -52,24 +52,32 @@
       </div>
       <Toolbar>
         <ToolbarContent>
-          <ToolbarMenu icon={Add20}>
+          <ToolbarMenu icon={Add20} flipped direction="top">
             <ToolbarMenuItem
               on:click={() => {
                 grade.grades.push(new Classes.PercentGrade("New Grade", ""));
                 update = !update;
-              }}>Percentage Grade</ToolbarMenuItem
+              }}>Percentage</ToolbarMenuItem
             >
             <ToolbarMenuItem
               on:click={() => {
                 grade.grades.push(new Classes.FractionGrade("New Grade", 0, 0));
                 update = !update;
-              }}>Fraction Grade</ToolbarMenuItem
+              }}>Fraction</ToolbarMenuItem
             >
             <ToolbarMenuItem
               on:click={() => {
                 grade.grades.push(new Classes.AverageGrade("New Grade", []));
                 update = !update;
-              }}>Average Grade</ToolbarMenuItem
+              }}>Average</ToolbarMenuItem
+            >
+            <ToolbarMenuItem
+              on:click={() => {
+                grade.grades.push(
+                  new Classes.WeightedAverageGrade("New Grade", [], [])
+                );
+                update = !update;
+              }}>Weighted Average</ToolbarMenuItem
             >
           </ToolbarMenu>
         </ToolbarContent>
@@ -99,24 +107,32 @@
       </div>
       <Toolbar>
         <ToolbarContent>
-          <ToolbarMenu icon={Add20}>
+          <ToolbarMenu icon={Add20} flipped direction="top">
             <ToolbarMenuItem
               on:click={() => {
                 grade.grades.push(new Classes.PercentGrade("New Grade", ""));
                 update = !update;
-              }}>Percentage Grade</ToolbarMenuItem
+              }}>Percentage</ToolbarMenuItem
             >
             <ToolbarMenuItem
               on:click={() => {
                 grade.grades.push(new Classes.FractionGrade("New Grade", 0, 0));
                 update = !update;
-              }}>Fraction Grade</ToolbarMenuItem
+              }}>Fraction</ToolbarMenuItem
             >
             <ToolbarMenuItem
               on:click={() => {
                 grade.grades.push(new Classes.AverageGrade("New Grade", []));
                 update = !update;
-              }}>Average Grade</ToolbarMenuItem
+              }}>Average</ToolbarMenuItem
+            >
+            <ToolbarMenuItem
+              on:click={() => {
+                grade.grades.push(
+                  new Classes.WeightedAverageGrade("New Grade", [], [])
+                );
+                update = !update;
+              }}>Weighted Average</ToolbarMenuItem
             >
           </ToolbarMenu>
           <Button icon={Delete20} kind="danger" iconDescription="Delete" />

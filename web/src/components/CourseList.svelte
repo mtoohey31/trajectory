@@ -104,9 +104,10 @@
                   false,
                   new Classes.PercentGrade("", null)
                 ),
-              ])
-            ))}
-        />
+              ]),
+              program.settings
+            ))}>Add Course</Button
+        >
       </ToolbarContent>
     </Toolbar>
   </DataTable>

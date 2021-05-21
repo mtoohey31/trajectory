@@ -22,16 +22,22 @@ export class UserData {
 
 export type UserDataObject = {
   programs: [ProgramObject, ...Array<ProgramObject>];
-  settings: {};
+  settings: UserSettingsObject;
 };
 
 export class UserSettings {
+  theme: "white" | "g10" | "g90" | "g100";
+
+  constructor(theme: "white" | "g10" | "g90" | "g100") {
+    this.theme = theme;
+  }
+
   static from(json: UserSettingsObject) {
-    return new UserSettings();
+    return new UserSettings(json.theme);
   }
 }
 
-export type UserSettingsObject = {};
+export type UserSettingsObject = { theme: "white" | "g10" | "g90" | "g100" };
 
 export class Program {
   institution: string;

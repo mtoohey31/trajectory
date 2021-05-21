@@ -1,40 +1,26 @@
 <script lang="ts">
   import { Content } from "carbon-components-svelte";
-  import { navigate } from "svelte-routing";
   import CourseGraph from "./components/CourseGraph.svelte";
   import CourseList from "./components/CourseList.svelte";
-  import Theme from "./components/Theme.svelte";
   import Header from "./components/Header.svelte";
-
-  let theme = "g10";
 
   export let userData: Classes.UserData;
   export let username: string;
   export let loginKey: CryptoKey;
-  export let vaultKey: CryptoKey;
-  export let updateData: () => void;
-
-  import { onMount } from "svelte";
-  onMount(() => {
-    if (!userData) {
-      navigate("/login");
-    }
-  });
+  export let syncing: boolean;
 
   import type * as Classes from "./classes";
 </script>
 
-<Theme persist bind:theme>
-  {#if userData}
-    <Header bind:theme bind:userData bind:username bind:loginKey {updateData} />
-    <main>
-      <Content style="height: 100%;">
-        <CourseGraph bind:program={userData.programs[0]} />
-        <CourseList bind:program={userData.programs[0]} />
-      </Content>
-    </main>
-  {/if}
-</Theme>
+{#if userData}
+  <Header bind:userData bind:username bind:loginKey bind:syncing />
+  <main>
+    <Content style="height: 100%;">
+      <CourseGraph bind:program={userData.programs[0]} />
+      <CourseList bind:program={userData.programs[0]} />
+    </Content>
+  </main>
+{/if}
 
 <style>
   main {

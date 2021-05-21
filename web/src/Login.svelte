@@ -91,8 +91,8 @@
           );
         } else {
           userData = new Classes.UserData(
-            [new Classes.Program("", [], new Classes.UserSettings())],
-            new Classes.UserSettings()
+            [new Classes.Program("", [], new Classes.ProgramSettings())],
+            new Classes.UserSettings("g10")
           );
         }
         navigate("./");

@@ -1,9 +1,19 @@
 <script lang="ts">
-  import { Router, Route } from "svelte-routing";
+  import { navigate, Router, Route } from "svelte-routing";
   import Dashboard from "./Dasbhoard.svelte";
   import Login from "./Login.svelte";
   import CreateAccount from "./CreateAccount.svelte";
+  import Account from "./Account.svelte";
+  import Theme from "./components/Theme.svelte";
+  import Import from "./Import.svelte";
   import type { UserData } from "./classes";
+
+  import { onMount } from "svelte";
+  onMount(() => {
+    if (!userData) {
+      navigate("/login");
+    }
+  });
 
   export let url = "";
   let userData: UserData;
@@ -47,22 +57,57 @@
       }
     });
   }
+
+  let firstChange = true;
+  let syncing = false;
+
+  async function sync(userData) {
+    console.log("checking sync");
+    if (firstChange) {
+      firstChange = false;
+    } else {
+      syncing = true;
+    }
+  }
+
+  setInterval(async () => {
+    if (syncing) {
+      console.log("actually syncing");
+      updateData().then(() => {
+        syncing = false;
+        console.log("syncing done");
+      });
+    }
+  }, 10000);
+
+  $: console.log(firstChange);
+  $: theme = userData ? userData.settings.theme : "g10";
+  $: console.log(theme);
+  $: sync(userData);
+  $: window.onbeforeunload = syncing
+    ? (e) => {
+        e.preventDefault();
+        return e;
+      }
+    : undefined;
 </script>
 
-<Router {url}>
-  <Route path="/">
-    <Dashboard
-      bind:userData
-      bind:username
-      bind:loginKey
-      bind:vaultKey
-      {updateData}
-    />
-  </Route>
-  <Route path="login">
-    <Login bind:userData bind:username bind:loginKey bind:vaultKey />
-  </Route>
-  <Route path="login/create">
-    <CreateAccount />
-  </Route>
-</Router>
+<Theme persist bind:theme>
+  <Router {url}>
+    <Route path="/">
+      <Dashboard bind:userData bind:username bind:loginKey bind:syncing />
+    </Route>
+    <Route path="login">
+      <Login bind:userData bind:username bind:loginKey bind:vaultKey />
+    </Route>
+    <Route path="login/create">
+      <CreateAccount />
+    </Route>
+    <Route path="account">
+      <Account bind:userData bind:username bind:loginKey />
+    </Route>
+    <Route path="account/import">
+      <Import bind:userData />
+    </Route>
+  </Router>
+</Theme>
