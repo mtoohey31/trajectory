@@ -13,15 +13,14 @@
   } from "carbon-components-svelte";
   import Light20 from "carbon-icons-svelte/lib/Light20/Light20.svelte";
   import Settings20 from "carbon-icons-svelte/lib/Settings20/Settings20.svelte";
+  import Upload20 from "carbon-icons-svelte/lib/Upload20/Upload20.svelte";
   import UserAvatar20 from "carbon-icons-svelte/lib/UserAvatar20/UserAvatar20.svelte";
+  import { navigate } from "svelte-routing";
 
-  import { UserData, Program } from "../classes";
+  import { UserData, Program, UserSettings } from "../classes";
 
   async function deleteAccount() {
-    const exportedKey = await window.crypto.subtle.exportKey(
-      "raw",
-      hashedPasswd
-    );
+    const exportedKey = await window.crypto.subtle.exportKey("raw", loginKey);
     let dec = new TextDecoder();
     let auth =
       "Basic " +
@@ -35,11 +34,18 @@
         "Content-Type": "application/json",
       },
     };
-    fetch("/api/users", options);
+    fetch("/api/users", options)
+      .then(() => {
+        navigate("/login");
+      })
+      .catch(() => {
+        // TODO: Handle failed deletion errors here
+      });
   }
   export let userData: UserData;
   export let username: string;
-  export let hashedPasswd: CryptoKey;
+  export let loginKey: CryptoKey;
+  export let updateData: () => void;
 
   export let theme;
 
@@ -51,6 +57,7 @@
     <SkipToContent />
   </div>
   <HeaderUtilities>
+    <HeaderGlobalAction icon={Upload20} on:click={() => updateData()} />
     <HeaderGlobalAction icon={UserAvatar20} />
     <HeaderGlobalAction aria-label="Settings" icon={Settings20} />
   </HeaderUtilities>
@@ -59,12 +66,11 @@
 <SideNav bind:isOpen={isSideNavOpen}>
   <SideNavItems>
     <SideNavMenu text="Programs">
-      {#each userData.programs as program, i}<SideNavMenuItem
-          on:click={() => console.log(i)}
+      {#each userData.programs as program}<SideNavMenuItem
           text={program.institution}
         />{/each}<SideNavMenuItem
         on:click={() => {
-          userData.programs.push(new Program("", []));
+          userData.programs.push(new Program("", [], new UserSettings()));
         }}
         text="Add Program"
       />

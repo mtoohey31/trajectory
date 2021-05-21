@@ -10,8 +10,9 @@
 
   export let userData: Classes.UserData;
   export let username: string;
-  export let hashedPasswd: CryptoKey;
-  export let vaultSalt: string;
+  export let loginKey: CryptoKey;
+  export let vaultKey: CryptoKey;
+  export let updateData: () => void;
 
   import { onMount } from "svelte";
   onMount(() => {
@@ -25,7 +26,7 @@
 
 <Theme persist bind:theme>
   {#if userData}
-    <Header bind:theme bind:userData bind:username bind:hashedPasswd />
+    <Header bind:theme bind:userData bind:username bind:loginKey {updateData} />
     <main>
       <Content style="height: 100%;">
         <CourseGraph bind:program={userData.programs[0]} />

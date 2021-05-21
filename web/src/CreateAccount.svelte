@@ -50,7 +50,7 @@
       if (res.status === 200) {
         navigate("/login");
       } else if (res.status === 409) {
-        usernameTaken = true;
+        usernameInvalid = true;
       } else {
         invalidPasswordText = "An unknown error occurred";
       }
@@ -61,11 +61,16 @@
   let password = "";
   let passwordConfirmation = "";
   let enteringPassword = false;
-  let usernameTaken = false;
+  $: invalidUsernameText =
+    enteredUsername.indexOf(":") === -1
+      ? "Username is already taken"
+      : "Username cannot contain :";
+  $: usernameInvalid = enteredUsername.indexOf(":") !== -1;
   $: passwordMismatch = password !== passwordConfirmation;
   $: invalidPasswordText = passwordMismatch
     ? "Passwords do not match"
     : "Unknown error";
+  $: createDisabled = usernameInvalid && invalidPasswordText;
 </script>
 
 <svelte:window
@@ -85,8 +90,8 @@
           autofocus
           labelText="Username"
           bind:value={enteredUsername}
-          bind:invalid={usernameTaken}
-          invalidText="Username is already taken"
+          bind:invalid={usernameInvalid}
+          bind:invalidText={invalidUsernameText}
         />
         <PasswordInput
           labelText="Password"
@@ -105,6 +110,7 @@
         />
         <Button
           style="margin-top: 1rem;"
+          bind:disabled={createDisabled}
           icon={Add20}
           on:click={() => createUser()}>Create Account</Button
         >

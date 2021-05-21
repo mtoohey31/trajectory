@@ -16,8 +16,8 @@
 
   export let userData: Classes.UserData;
   export let username: string;
-  export let hashedPasswd: CryptoKey;
-  export let vaultSalt: string;
+  export let loginKey: CryptoKey;
+  export let vaultKey: CryptoKey;
 
   async function login() {
     let strUtf8 = unescape(encodeURIComponent(enteredUsername));
@@ -40,8 +40,8 @@
       true,
       ["encrypt"]
     );
-    const exportedKey = await window.crypto.subtle.exportKey("raw", derivedKey);
-    const exportedKeyBuffer = new Uint8Array(exportedKey);
+    let exportedKey = await window.crypto.subtle.exportKey("raw", derivedKey);
+    let exportedKeyBuffer = new Uint8Array(exportedKey);
     let dec = new TextDecoder();
     let auth =
       "Basic " +
@@ -62,21 +62,42 @@
     fetch("/api/users/data", options).then(async (res) => {
       if (res.status === 200) {
         invalidText = "";
-        let resData = await res.json();
-        // TODO: Handle errors here
-        if (resData.data) {
+        username = enteredUsername;
+        loginKey = derivedKey;
+        let resData = (await res.body.getReader().read()).value;
+        vaultKey = await window.crypto.subtle.deriveKey(
+          {
+            name: "PBKDF2",
+            salt: resData.slice(0, 16),
+            iterations: 100000,
+            hash: "SHA-256",
+          },
+          keyMaterial,
+          { name: "AES-GCM", length: 256 },
+          true,
+          ["encrypt", "decrypt"]
+        );
+        if (resData.length > 16) {
+          let decryptedData = await window.crypto.subtle.decrypt(
+            {
+              name: "AES-GCM",
+              iv: resData.slice(16, 32),
+            },
+            vaultKey,
+            resData.slice(32)
+          );
+          userData = Classes.UserData.from(
+            JSON.parse(dec.decode(decryptedData))
+          );
         } else {
-          username = enteredUsername;
-          hashedPasswd = derivedKey;
-          vaultSalt = resData.vaultSalt;
           userData = new Classes.UserData(
-            [new Classes.Program("", [])],
+            [new Classes.Program("", [], new Classes.UserSettings())],
             new Classes.UserSettings()
           );
-          navigate("./");
         }
+        navigate("./");
       } else if (res.status === 403) {
-        invalidText = "Incorrect enteredUsername or password";
+        invalidText = "Incorrect username or password";
       } else {
         invalidText = "An unknown error occurred";
       }

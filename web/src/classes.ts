@@ -6,18 +6,54 @@ export class UserData {
     this.programs = programs;
     this.settings = settings;
   }
+
+  static from(json: UserDataObject) {
+    return new UserData(
+      [
+        Program.from(json.programs[0]),
+        ...json.programs
+          .slice(1)
+          .map((program: ProgramObject) => Program.from(program)),
+      ],
+      UserSettings.from(json.settings)
+    );
+  }
 }
 
-export class UserSettings {}
+export type UserDataObject = {
+  programs: [ProgramObject, ...Array<ProgramObject>];
+  settings: {};
+};
+
+export class UserSettings {
+  static from(json: UserSettingsObject) {
+    return new UserSettings();
+  }
+}
+
+export type UserSettingsObject = {};
 
 export class Program {
   institution: string;
   courses: Array<Course>;
   settings: ProgramSettings;
 
-  constructor(institution: string, courses: Array<Course>) {
+  constructor(
+    institution: string,
+    courses: Array<Course>,
+    settings: ProgramSettings
+  ) {
     this.institution = institution;
     this.courses = courses;
+    this.settings = settings;
+  }
+
+  static from(json: ProgramObject) {
+    return new Program(
+      json.institution,
+      json.courses.map((course) => Course.from(course)),
+      ProgramSettings.from(json.settings)
+    );
   }
 
   predicted(): number | null {
@@ -41,7 +77,19 @@ export class Program {
   }
 }
 
-export class ProgramSettings {}
+export type ProgramObject = {
+  institution: string;
+  courses: Array<CourseObject>;
+  settings: ProgramSettingsObject;
+};
+
+export class ProgramSettings {
+  static from(json: ProgramSettingsObject) {
+    return new ProgramSettings();
+  }
+}
+
+export type ProgramSettingsObject = {};
 
 export class Course {
   name: string;
@@ -65,6 +113,17 @@ export class Course {
     this.finalGrade = finalGrade;
   }
 
+  static from(json: CourseObject) {
+    return new Course(
+      json.name,
+      json.code,
+      // @ts-ignore
+      Grade.from(json.rootGrade),
+      json.finished,
+      Grade.from(json.finalGrade)
+    );
+  }
+
   predicted(): number | null {
     return this.rootGrade.predicted();
   }
@@ -74,17 +133,65 @@ export class Course {
   }
 }
 
+export type CourseObject = {
+  name: string;
+  code: string;
+  credits: number;
+  rootGrade: GradeObject;
+  finished: boolean;
+  finalGrade: GradeObject;
+};
+
 export class Grade {
   name: string;
   predicted: () => number | null;
   completion: () => number;
-  type: string;
+  type:
+    | "FractionGrade"
+    | "WeightedAverageGrade"
+    | "PercentGrade"
+    | "AverageGrade";
 
   constructor(name: string) {
     this.name = name;
+    // @ts-ignore
     this.type = this.constructor.name;
   }
+
+  static from(json: GradeObject) {
+    if (json.type === "FractionGrade") {
+      // @ts-ignore
+      return new FractionGrade(json.name, json.numerator, json.denominator);
+    } else if (json.type === "WeightedAverageGrade") {
+      return new WeightedAverageGrade(
+        json.name,
+        // @ts-ignore
+        json.grades.map((grade: GradeObject) => Grade.from(grade)),
+        // @ts-ignore
+        json.weights
+      );
+    } else if (json.type === "PercentGrade") {
+      // @ts-ignore
+      return new PercentGrade(json.name, json.percent);
+    } else {
+      // if (json.type === "AverageGrade")
+      return new AverageGrade(
+        json.name,
+        // @ts-ignore
+        json.grades.map((grade: GradeObject) => Grade.from(grade))
+      );
+    }
+  }
 }
+
+export type GradeObject = {
+  name: string;
+  type:
+    | "FractionGrade"
+    | "WeightedAverageGrade"
+    | "PercentGrade"
+    | "AverageGrade";
+};
 
 export class FractionGrade extends Grade {
   numerator: number;
@@ -107,6 +214,11 @@ export class FractionGrade extends Grade {
   };
 }
 
+export interface FractionGradeObject extends GradeObject {
+  numerator: number;
+  denominator: number;
+}
+
 export class PercentGrade extends Grade {
   percent: number | null;
 
@@ -122,6 +234,10 @@ export class PercentGrade extends Grade {
   completion = (): number => {
     return this.percent === 0 || this.percent ? 1 : 0;
   };
+}
+
+export interface PercentGradeObject extends GradeObject {
+  percent: number | null;
 }
 
 export class AverageGrade extends Grade {
@@ -152,6 +268,10 @@ export class AverageGrade extends Grade {
   };
 }
 
+export interface AverageGradeObject extends GradeObject {
+  grades: Array<GradeObject>;
+}
+
 export class WeightedAverageGrade extends Grade {
   grades: Array<Grade>;
   weights: Array<number>;
@@ -180,4 +300,9 @@ export class WeightedAverageGrade extends Grade {
     }
     return sumSoFar;
   };
+}
+
+export interface WeightedAverageObject extends GradeObject {
+  grades: Array<GradeObject>;
+  weights: Array<number>;
 }
