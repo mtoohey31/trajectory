@@ -28,6 +28,9 @@ async fn create_user(
     pool: web::Data<r2d2::Pool<ConnectionManager<PgConnection>>>,
     _req: web::HttpRequest,
 ) -> Result<HttpResponse> {
+    if creds.username.contains(":") {
+        return Ok(HttpResponse::BadRequest().finish());
+    }
     let connection = pool.get().unwrap();
     use crate::schema::users::dsl::{username, users};
     match diesel::dsl::select(diesel::dsl::exists(
@@ -291,7 +294,6 @@ async fn update_data(
     request: web::HttpRequest,
     pool: web::Data<r2d2::Pool<ConnectionManager<PgConnection>>>,
 ) -> Result<HttpResponse> {
-    println!("{:#?}", new_data);
     // TODO: Examine what in this section should constitute a BadRequest and what should constitute
     // an InternalServerError.
     let mut iter = match request.headers().get("Authorization") {
