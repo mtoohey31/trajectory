@@ -4,6 +4,7 @@
     Button,
     Checkbox,
     DataTable,
+    InlineNotification,
     NumberInput,
     Search,
     TextInput,
@@ -11,13 +12,11 @@
     ToolbarContent,
   } from "carbon-components-svelte";
   import Add20 from "carbon-icons-svelte/lib/Add20/Add20.svelte";
+  import Delete20 from "carbon-icons-svelte/lib/Delete20/Delete20.svelte";
   import GradeTable from "./GradeTable.svelte";
 
   export let program: Classes.Program;
   let searchString: string;
-  $: gradeStrings = program.courses.map((course) => {
-    return (course.predicted() * 100).toFixed(2).toString();
-  });
 </script>
 
 <main>
@@ -26,8 +25,10 @@
     headers={[
       { key: "name", value: "Name" },
       { key: "code", value: "Code" },
-      { key: "grade", value: "% Grade" },
+      { key: "grade", value: "Grade" },
+      { key: "GPA", value: "GPA" },
       { key: "finished", value: "Finished" },
+      { key: "overflow", empty: true },
     ]}
     rows={searchString
       ? program.courses
@@ -37,17 +38,11 @@
               course.code.indexOf(searchString) !== -1
             );
           })
-          .map((course, i) => {
-            course.id = i;
-            let predicted = course.predicted();
-            course.grade = predicted ? (predicted * 100).toFixed(2) : "--";
-            return course;
+          .map((_, i) => {
+            return { id: i };
           })
-      : program.courses.map((course, i) => {
-          course.id = i;
-          let predicted = course.predicted();
-          course.grade = predicted ? (predicted * 100).toFixed(2) : "--";
-          return course;
+      : program.courses.map((_, i) => {
+          return { id: i };
         })}
   >
     <span slot="cell" let:cell let:row>
@@ -78,8 +73,17 @@
       {:else if cell.key === "grade"}
         <NumberInput
           disabled
-          value={cell.value}
+          value={program.courses[row.id].predicted()}
           style="--cds-disabled-02: var(--cds-text-01); width: 5rem;"
+        />
+      {:else if cell.key === "overflow"}
+        <Button
+          kind="danger"
+          iconDescription="Delete"
+          icon={Delete20}
+          on:click={() => {
+            program.courses = program.courses.filter((_, i) => i !== row.id);
+          }}
         />
       {:else}
         {cell.value}
@@ -111,4 +115,13 @@
       </ToolbarContent>
     </Toolbar>
   </DataTable>
+  {#if program.courses.length === 0}
+    <InlineNotification
+      lowContrast
+      hideCloseButton
+      kind="info"
+      title="Tip:"
+      subtitle="Get started by clicking Add Course."
+    />
+  {/if}
 </main>

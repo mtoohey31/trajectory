@@ -52,7 +52,7 @@
     };
     fetch("/api/users", options)
       .then(() => {
-        navigate("/login");
+        navigate("/login?message=Account successfully deleted.");
       })
       .catch(() => {
         // TODO: Handle failed deletion errors here

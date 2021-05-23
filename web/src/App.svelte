@@ -15,7 +15,7 @@
 
   import { onMount } from "svelte";
   onMount(() => {
-    if (!userData) {
+    if (location.pathname !== "/login" && !userData) {
       navigate("/login");
     }
   });
@@ -100,13 +100,7 @@
       {/if}
     </Route>
     <Route path="login">
-      <Login
-        bind:userData
-        bind:username
-        bind:loginKey
-        bind:vaultKey
-        bind:firstChange
-      />
+      <Login bind:userData bind:username bind:loginKey bind:vaultKey />
     </Route>
     <Route path="login/create">
       <CreateAccount />

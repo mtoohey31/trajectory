@@ -16,7 +16,7 @@
   });
 </script>
 
-<Header bind:syncing />
+<Header bind:syncing institution={userData.programs[0].institution} />
 <main>
   <Content style="height: 100%;">
     <CourseGraph bind:program={userData.programs[0]} />

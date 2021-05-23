@@ -12,12 +12,13 @@
   import Renew20 from "carbon-icons-svelte/lib/Renew20/Renew20.svelte";
   import { navigate } from "svelte-routing";
 
+  export let institution: string;
   export let syncing: boolean;
 
   let isOpen: boolean;
 </script>
 
-<Header company="Trajectory" href="/">
+<Header company="Trajectory" platformName={institution} href="/">
   <div slot="skip-to-content">
     <SkipToContent />
   </div>

@@ -8,6 +8,7 @@
     Column,
     TextInput,
     PasswordInput,
+    InlineNotification,
   } from "carbon-components-svelte";
   import Login20 from "carbon-icons-svelte/lib/Login20/Login20.svelte";
   import Add20 from "carbon-icons-svelte/lib/Add20/Add20.svelte";
@@ -18,7 +19,6 @@
   export let username: string;
   export let loginKey: CryptoKey;
   export let vaultKey: CryptoKey;
-  export let firstChange: boolean;
 
   async function login() {
     let strUtf8 = unescape(encodeURIComponent(enteredUsername));
@@ -110,6 +110,10 @@
   let enteringPassword = false;
   let invalidText = "";
   $: invalid = !!invalidText;
+  $: hasMessage = new URLSearchParams(location.search).has("message");
+  $: message = decodeURIComponent(
+    new URLSearchParams(window.location.search).get("message")
+  );
 </script>
 
 <svelte:window
@@ -147,6 +151,13 @@
             on:click={() => navigate("login/create")}>Create Account</Button
           >
         </ButtonSet>
+        {#if hasMessage}
+          <InlineNotification
+            kind="info"
+            subtitle={message}
+            on:close={() => navigate("/login")}
+          />
+        {/if}
       </Column>
     </Row>
   </Grid>

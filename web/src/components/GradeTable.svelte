@@ -3,6 +3,7 @@
   import {
     Button,
     DataTable,
+    InlineNotification,
     NumberInput,
     Toolbar,
     ToolbarContent,
@@ -83,6 +84,15 @@
         </ToolbarContent>
       </Toolbar>
     </DataTable>
+    {#if grade.grades.length === 0}
+      <InlineNotification
+        lowContrast
+        hideCloseButton
+        kind="info"
+        title="Tip:"
+        subtitle="Get started by clicking Add Grade"
+      />
+    {/if}
   {:else if grade.constructor.name == "AverageGrade"}
     <DataTable
       title="Average Grade"

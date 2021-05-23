@@ -48,7 +48,7 @@
     };
     fetch("/api/users", options).then(async (res) => {
       if (res.status === 200) {
-        navigate("/login");
+        navigate("/login?message=Account created, please log in.");
       } else if (res.status === 409) {
         usernameInvalid = true;
       } else {
