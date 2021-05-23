@@ -18,7 +18,7 @@
   let isOpen: boolean;
 </script>
 
-<Header company="Trajectory" platformName={institution} href="/">
+<Header company="Trajectory" platformName={institution}>
   <div slot="skip-to-content">
     <SkipToContent />
   </div>

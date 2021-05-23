@@ -10,6 +10,7 @@
     PasswordInput,
     InlineNotification,
   } from "carbon-components-svelte";
+  import Centered from "./components/Centered.svelte";
   import Login20 from "carbon-icons-svelte/lib/Login20/Login20.svelte";
   import Add20 from "carbon-icons-svelte/lib/Add20/Add20.svelte";
   import { navigate } from "svelte-routing";
@@ -124,41 +125,43 @@
   }}
 />
 
-<Content>
-  <Grid>
-    <Row>
-      <Column>
-        <h1>Login</h1>
-        <TextInput
-          autofocus
-          labelText="Username"
-          bind:value={enteredUsername}
-          bind:invalid
-        />
-        <PasswordInput
-          labelText="Password"
-          bind:value={password}
-          bind:invalid
-          bind:invalidText
-          on:focus={() => (enteringPassword = true)}
-          on:blur={() => (enteringPassword = false)}
-        />
-        <ButtonSet style="margin-top: 1rem;">
-          <Button icon={Login20} on:click={login}>Login</Button>
-          <Button
-            icon={Add20}
-            kind="tertiary"
-            on:click={() => navigate("login/create")}>Create Account</Button
-          >
-        </ButtonSet>
-        {#if hasMessage}
-          <InlineNotification
-            kind="info"
-            subtitle={message}
-            on:close={() => navigate("/login")}
+<Centered>
+  <Content>
+    <Grid>
+      <Row>
+        <Column>
+          <h1>Login</h1>
+          <TextInput
+            autofocus
+            labelText="Username"
+            bind:value={enteredUsername}
+            bind:invalid
           />
-        {/if}
-      </Column>
-    </Row>
-  </Grid>
-</Content>
+          <PasswordInput
+            labelText="Password"
+            bind:value={password}
+            bind:invalid
+            bind:invalidText
+            on:focus={() => (enteringPassword = true)}
+            on:blur={() => (enteringPassword = false)}
+          />
+          <ButtonSet style="margin-top: 1rem;">
+            <Button icon={Login20} on:click={login}>Login</Button>
+            <Button
+              icon={Add20}
+              kind="tertiary"
+              on:click={() => navigate("login/create")}>Create Account</Button
+            >
+          </ButtonSet>
+          {#if hasMessage}
+            <InlineNotification
+              kind="info"
+              subtitle={message}
+              on:close={() => navigate("/login")}
+            />
+          {/if}
+        </Column>
+      </Row>
+    </Grid>
+  </Content>
+</Centered>

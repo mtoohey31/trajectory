@@ -7,6 +7,7 @@
     Column,
     FileUploaderButton,
   } from "carbon-components-svelte";
+  import Centered from "./components/Centered.svelte";
   import { UserData } from "./classes";
   import { navigate } from "svelte-routing";
 
@@ -19,17 +20,19 @@
   }
 </script>
 
-<Content>
-  <Grid>
-    <Row>
-      <Column>
-        <h1>Import</h1>
-        <FileUploaderButton
-          labelText="Upload Data"
-          accept={["application/json"]}
-          on:change={uploadData}
-        />
-      </Column>
-    </Row>
-  </Grid>
-</Content>
+<Centered>
+  <Content>
+    <Grid>
+      <Row>
+        <Column>
+          <h1>Import</h1>
+          <FileUploaderButton
+            labelText="Upload Data"
+            accept={["application/json"]}
+            on:change={uploadData}
+          />
+        </Column>
+      </Row>
+    </Grid>
+  </Content>
+</Centered>

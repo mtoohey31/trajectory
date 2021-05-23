@@ -8,6 +8,7 @@
     TextInput,
     PasswordInput,
   } from "carbon-components-svelte";
+  import Centered from "./components/Centered.svelte";
   import Add20 from "carbon-icons-svelte/lib/Add20/Add20.svelte";
   import { navigate } from "svelte-routing";
 
@@ -81,40 +82,42 @@
   }}
 />
 
-<Content>
-  <Grid>
-    <Row>
-      <Column>
-        <h1>Create Account</h1>
-        <TextInput
-          autofocus
-          labelText="Username"
-          bind:value={enteredUsername}
-          bind:invalid={usernameInvalid}
-          bind:invalidText={invalidUsernameText}
-        />
-        <PasswordInput
-          labelText="Password"
-          bind:value={password}
-          bind:invalid={passwordMismatch}
-          on:focus={() => (enteringPassword = true)}
-          on:blur={() => (enteringPassword = false)}
-        />
-        <PasswordInput
-          labelText="Confirm Password"
-          bind:value={passwordConfirmation}
-          bind:invalid={passwordMismatch}
-          bind:invalidText={invalidPasswordText}
-          on:focus={() => (enteringPassword = true)}
-          on:blur={() => (enteringPassword = false)}
-        />
-        <Button
-          style="margin-top: 1rem;"
-          bind:disabled={createDisabled}
-          icon={Add20}
-          on:click={() => createUser()}>Create Account</Button
-        >
-      </Column>
-    </Row>
-  </Grid>
-</Content>
+<Centered>
+  <Content>
+    <Grid>
+      <Row>
+        <Column>
+          <h1>Create Account</h1>
+          <TextInput
+            autofocus
+            labelText="Username"
+            bind:value={enteredUsername}
+            bind:invalid={usernameInvalid}
+            bind:invalidText={invalidUsernameText}
+          />
+          <PasswordInput
+            labelText="Password"
+            bind:value={password}
+            bind:invalid={passwordMismatch}
+            on:focus={() => (enteringPassword = true)}
+            on:blur={() => (enteringPassword = false)}
+          />
+          <PasswordInput
+            labelText="Confirm Password"
+            bind:value={passwordConfirmation}
+            bind:invalid={passwordMismatch}
+            bind:invalidText={invalidPasswordText}
+            on:focus={() => (enteringPassword = true)}
+            on:blur={() => (enteringPassword = false)}
+          />
+          <Button
+            style="margin-top: 1rem;"
+            bind:disabled={createDisabled}
+            icon={Add20}
+            on:click={() => createUser()}>Create Account</Button
+          >
+        </Column>
+      </Row>
+    </Grid>
+  </Content>
+</Centered>

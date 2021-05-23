@@ -8,6 +8,7 @@
     Row,
     Column,
   } from "carbon-components-svelte";
+  import Centered from "./components/Centered.svelte";
   import type { UserData } from "./classes";
   import { themes } from "./components/Theme.svelte";
   import { navigate } from "svelte-routing";
@@ -60,32 +61,34 @@
   }
 </script>
 
-<Content>
-  <Grid>
-    <Row>
-      <Column>
-        <h1>Account</h1>
-        <Dropdown
-          titleText="Theme"
-          {selectedIndex}
-          items={idThemes}
-          on:select={(e) => {
-            userData.settings.theme = e.detail.selectedItem.text;
-          }}
-        />
-        <ButtonSet style="margin-top:1rem;">
-          <Button on:click={() => navigate("/account/import")}
-            >Import Data</Button
+<Centered>
+  <Content>
+    <Grid>
+      <Row>
+        <Column>
+          <h1>Account</h1>
+          <Dropdown
+            titleText="Theme"
+            {selectedIndex}
+            items={idThemes}
+            on:select={(e) => {
+              userData.settings.theme = e.detail.selectedItem.text;
+            }}
+          />
+          <ButtonSet style="margin-top:1rem;">
+            <Button on:click={() => navigate("/account/import")}
+              >Import Data</Button
+            >
+            <Button on:click={exportData}>Export Data</Button>
+          </ButtonSet>
+          <Button
+            style="margin-top:1rem;"
+            kind="danger"
+            icon={Delete20}
+            on:click={deleteAccount}>Delete Account</Button
           >
-          <Button on:click={exportData}>Export Data</Button>
-        </ButtonSet>
-        <Button
-          style="margin-top:1rem;"
-          kind="danger"
-          icon={Delete20}
-          on:click={deleteAccount}>Delete Account</Button
-        >
-      </Column>
-    </Row>
-  </Grid>
-</Content>
+        </Column>
+      </Row>
+    </Grid>
+  </Content>
+</Centered>
