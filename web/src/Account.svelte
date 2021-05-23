@@ -7,6 +7,9 @@
     Grid,
     Row,
     Column,
+    InlineNotification,
+    OverflowMenu,
+    OverflowMenuItem,
   } from "carbon-components-svelte";
   import Centered from "./components/Centered.svelte";
   import type { UserData } from "./classes";
@@ -67,6 +70,7 @@
       <Row>
         <Column>
           <h1>Account</h1>
+          <h2>Settings</h2>
           <Dropdown
             titleText="Theme"
             {selectedIndex}
@@ -81,12 +85,22 @@
             >
             <Button on:click={exportData}>Export Data</Button>
           </ButtonSet>
-          <Button
-            style="margin-top:1rem;"
-            kind="danger"
-            icon={Delete20}
-            on:click={deleteAccount}>Delete Account</Button
-          >
+          <h2>Delete</h2>
+          <InlineNotification
+            hideCloseButton
+            title="Warning:"
+            subtitle="This action is irreversible, please consider exporting data first."
+          />
+          <OverflowMenu style="width: auto;">
+            <Button slot="menu" kind="danger" icon={Delete20}
+              >Delete Account</Button
+            >
+            <OverflowMenuItem
+              danger
+              text="Delete Account"
+              on:click={deleteAccount}
+            />
+          </OverflowMenu>
         </Column>
       </Row>
     </Grid>
