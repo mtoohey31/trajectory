@@ -26,9 +26,9 @@ export type UserDataObject = {
 };
 
 export class UserSettings {
-  theme: "white" | "g10" | "g90" | "g100";
+  theme: theme;
 
-  constructor(theme: "white" | "g10" | "g90" | "g100") {
+  constructor(theme: theme) {
     this.theme = theme;
   }
 
@@ -37,7 +37,9 @@ export class UserSettings {
   }
 }
 
-export type UserSettingsObject = { theme: "white" | "g10" | "g90" | "g100" };
+export type UserSettingsObject = { theme: theme };
+
+export type theme = "white" | "g10" | "g90" | "g100";
 
 export class Program {
   institution: string;

@@ -1,5 +1,6 @@
 <script context="module" lang="ts">
-  export const themes = ["white", "g10", "g90", "g100"];
+  export const themes: Array<theme> = ["white", "g10", "g90", "g100"];
+  export const themeNames = ["White", "Gray 10", "Gray 90", "Gray 100"];
 </script>
 
 <script content="module" lang="ts">
@@ -8,6 +9,7 @@
   export let theme = "white";
   import { onMount, afterUpdate, setContext } from "svelte";
   import { writable, derived } from "svelte/store";
+  import type { theme } from "../classes";
   const isValidTheme = (value) => themes.includes(value);
   const isDark = (value) =>
     isValidTheme(value) && (value === "g90" || value === "g100");

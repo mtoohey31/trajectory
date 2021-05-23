@@ -10,12 +10,12 @@
   } from "carbon-components-svelte";
   import Centered from "./components/Centered.svelte";
   import type { UserData } from "./classes";
-  import { themes } from "./components/Theme.svelte";
+  import { themes, themeNames } from "./components/Theme.svelte";
   import { navigate } from "svelte-routing";
   import Delete20 from "carbon-icons-svelte/lib/Delete20/Delete20.svelte";
 
   const idThemes = themes.reduce(
-    (themesSoFar, theme, i) => themesSoFar.concat([{ id: i, text: theme }]),
+    (themesSoFar, _, i) => themesSoFar.concat([{ id: i, text: themeNames[i] }]),
     []
   );
   $: selectedIndex =
@@ -72,7 +72,7 @@
             {selectedIndex}
             items={idThemes}
             on:select={(e) => {
-              userData.settings.theme = e.detail.selectedItem.text;
+              userData.settings.theme = themes[e.detail.selectedIndex];
             }}
           />
           <ButtonSet style="margin-top:1rem;">
