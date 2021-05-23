@@ -5,22 +5,24 @@
   import Header from "./components/Header.svelte";
 
   export let userData: Classes.UserData;
-  export let username: string;
-  export let loginKey: CryptoKey;
   export let syncing: boolean;
+  export let firstChange: boolean;
 
   import type * as Classes from "./classes";
+
+  import { onMount } from "svelte";
+  onMount(() => {
+    firstChange = true;
+  });
 </script>
 
-{#if userData}
-  <Header bind:userData bind:username bind:loginKey bind:syncing />
-  <main>
-    <Content style="height: 100%;">
-      <CourseGraph bind:program={userData.programs[0]} />
-      <CourseList bind:program={userData.programs[0]} />
-    </Content>
-  </main>
-{/if}
+<Header bind:syncing />
+<main>
+  <Content style="height: 100%;">
+    <CourseGraph bind:program={userData.programs[0]} />
+    <CourseList bind:program={userData.programs[0]} />
+  </Content>
+</main>
 
 <style>
   main {

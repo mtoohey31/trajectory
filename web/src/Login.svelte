@@ -18,6 +18,7 @@
   export let username: string;
   export let loginKey: CryptoKey;
   export let vaultKey: CryptoKey;
+  export let firstChange: boolean;
 
   async function login() {
     let strUtf8 = unescape(encodeURIComponent(enteredUsername));

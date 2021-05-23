@@ -8,6 +8,11 @@
   import Import from "./Import.svelte";
   import type { UserData } from "./classes";
 
+  import { globalHistory } from "svelte-routing/src/history";
+  globalHistory.listen((h) => {
+    firstChange = true;
+  });
+
   import { onMount } from "svelte";
   onMount(() => {
     if (!userData) {
@@ -61,8 +66,7 @@
   let firstChange = true;
   let syncing = false;
 
-  async function sync(userData) {
-    console.log("checking sync");
+  async function sync(_userData: UserData) {
     if (firstChange) {
       firstChange = false;
     } else {
@@ -72,20 +76,16 @@
 
   setInterval(async () => {
     if (syncing) {
-      console.log("actually syncing");
       updateData().then(() => {
         syncing = false;
-        console.log("syncing done");
       });
     }
   }, 10000);
 
-  $: console.log(firstChange);
   $: theme = userData ? userData.settings.theme : "g10";
-  $: console.log(theme);
   $: sync(userData);
   $: window.onbeforeunload = syncing
-    ? (e) => {
+    ? (e: Event) => {
         e.preventDefault();
         return e;
       }
@@ -95,16 +95,26 @@
 <Theme persist bind:theme>
   <Router {url}>
     <Route path="/">
-      <Dashboard bind:userData bind:username bind:loginKey bind:syncing />
+      {#if userData}
+        <Dashboard bind:userData bind:syncing bind:firstChange />
+      {/if}
     </Route>
     <Route path="login">
-      <Login bind:userData bind:username bind:loginKey bind:vaultKey />
+      <Login
+        bind:userData
+        bind:username
+        bind:loginKey
+        bind:vaultKey
+        bind:firstChange
+      />
     </Route>
     <Route path="login/create">
       <CreateAccount />
     </Route>
     <Route path="account">
-      <Account bind:userData bind:username bind:loginKey />
+      {#if userData}
+        <Account bind:userData bind:username bind:loginKey />
+      {/if}
     </Route>
     <Route path="account/import">
       <Import bind:userData />
