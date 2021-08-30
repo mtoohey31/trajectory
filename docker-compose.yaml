@@ -2,24 +2,23 @@ version: "3.9"
 
 services:
   proxy:
-    container_name: trajectory-proxy-dev
+    container_name: trajectory-proxy
     image: caddy:latest
     ports:
       - 80:80
+      - 443:443
     volumes:
-      - ./Caddyfile.dev:/etc/caddy/Caddyfile
+      - ./Caddyfile:/etc/caddy/Caddyfile
     networks:
       - proxy
     depends_on:
       - web
   web:
-    container_name: trajectory-web-dev
-    image: trajectory-web-dev
+    container_name: trajectory-web
+    image: trajectory-web
     build:
       context: ./web/
-      dockerfile: ./Dockerfile.dev
-    ports:
-      - 35729:35729
+      dockerfile: ./Dockerfile
     volumes:
       - ./web:/usr/src/trajectory-web
     networks:
@@ -27,11 +26,11 @@ services:
     depends_on:
       - server
   server:
-    container_name: trajectory-server-dev
-    image: trajectory-server-dev
+    container_name: trajectory-server
+    image: trajectory-server
     build:
       context: ./server/
-      dockerfile: ./Dockerfile.dev
+      dockerfile: ./Dockerfile
     volumes:
       - ./server:/usr/src/trajectory-server
     networks:
@@ -41,7 +40,7 @@ services:
       - db
   db:
     image: postgres:latest
-    container_name: trajectory-db-dev
+    container_name: trajectory-db
     environment:
       POSTGRES_USER: trajectory-server
       POSTGRES_PASSWORD: changeme

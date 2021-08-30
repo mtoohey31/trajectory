@@ -4,12 +4,32 @@ A full stack grade tracking app with end-to-end encryption. This project is curr
 
 ## Usage
 
+### Development
+
 To start the development version of the project, you only need to run three commands, assuming you have `docker-compose` installed:
 
-```bash
+```sh
 git clone https://github.com/mtoohey31/trajectory
 cd trajectory
 docker-compose --file docker-compose.dev.yaml up
 ```
 
-There currently appears to be some sort of issue though that results in the project being brought up correctly only around 1/4th of the time, the other 3/4ths the `/api` route is inaccessible and is redirected to the frontend. This isn't a huge problem since as soon as you get it to launch correctly once, you won't have to restart it until you're done working on the project since both the front and back ends have hot-reloading set up. If you know what the problem might be, please let me know!
+### Production
+
+To start the production version of the project, begin by running the following commands:
+
+```sh
+git clone https://github.com/mtoohey31/trajectory
+cd trajectory
+cp Caddyfile.example Caddyfile
+```
+
+Next, edit the `Caddyfile` to replace `<hostname>` with the hostname you will be serving the app on. Caddy should automatically negotiate TLS certificates once the app is started, but if you run into issues, visit [Caddy's documentation](https://caddyserver.com/docs/quick-starts/https).
+
+Then start, the app by running:
+
+```sh
+docker-compose --file docker-compose.yaml up
+```
+
+Assuming your DNS and ports are set up correctly the app should now be available on the host you specified.
