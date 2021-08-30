@@ -415,20 +415,8 @@ async fn main() -> std::io::Result<()> {
             .service(delete_user)
             .service(get_data)
             .service(update_data)
-            .service(hello_world)
     })
     .bind(&"0.0.0.0:8080")?
     .run()
     .await
-}
-
-#[get("/")]
-async fn hello_world() -> Result<HttpResponse> {
-    #[derive(Serialize)]
-    struct Hello {
-        hello: String,
-    }
-    Ok(HttpResponse::Ok().json(Hello {
-        hello: "world".to_string(),
-    }))
 }
