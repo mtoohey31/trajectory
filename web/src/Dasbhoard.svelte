@@ -17,10 +17,10 @@
   });
 </script>
 
-<Header bind:syncing institution={userData.programs[0].institution} />
+<Header bind:syncing institution={userData.programs[userData.lastProgram].institution} />
 <Centered>
   <Content style="height: 100%;">
-    <CourseGraph bind:program={userData.programs[0]} />
-    <CourseList bind:program={userData.programs[0]} />
+    <CourseGraph bind:program={userData.programs[userData.lastProgram]} />
+    <CourseList bind:program={userData.programs[userData.lastProgram]} />
   </Content>
 </Centered>

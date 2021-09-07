@@ -1,10 +1,12 @@
 export class UserData {
   programs: [Program, ...Array<Program>];
   settings: UserSettings;
+  lastProgram: number;
 
-  constructor(programs: [Program, ...Array<Program>], settings: UserSettings) {
+  constructor(programs: [Program, ...Array<Program>], settings: UserSettings, lastProgram: number) {
     this.programs = programs;
     this.settings = settings;
+    this.lastProgram = lastProgram;
   }
 
   static from(json: UserDataObject) {
@@ -15,7 +17,8 @@ export class UserData {
           .slice(1)
           .map((program: ProgramObject) => Program.from(program)),
       ],
-      UserSettings.from(json.settings)
+      UserSettings.from(json.settings),
+      json.lastProgram
     );
   }
 }
@@ -23,6 +26,7 @@ export class UserData {
 export type UserDataObject = {
   programs: [ProgramObject, ...Array<ProgramObject>];
   settings: UserSettingsObject;
+  lastProgram: number;
 };
 
 export class UserSettings {
