@@ -22,7 +22,6 @@
 <DataTable
   batchExpansion
   headers={[
-    { key: "name", value: "Name" },
     { key: "code", value: "Code" },
     { key: "grade", value: "Grade" },
     { key: "GPA", value: "GPA" },
@@ -45,9 +44,7 @@
       })}
 >
   <span slot="cell" let:cell let:row>
-    {#if cell.key === "name"}
-      <TextInput bind:value={program.courses[row.id][cell.key]} />
-    {:else if cell.key === "code"}
+    {#if cell.key === "code"}
       <TextInput
         bind:value={program.courses[row.id][cell.key]}
         style="width: 6rem;"
@@ -101,7 +98,6 @@
             program.institution,
             program.courses.concat([
               new Classes.Course(
-                "",
                 "",
                 new Classes.WeightedAverageGrade("", [], []),
                 false,

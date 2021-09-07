@@ -100,7 +100,6 @@ export class ProgramSettings {
 export type ProgramSettingsObject = {};
 
 export class Course {
-  name: string;
   code: string;
   credits: number;
   rootGrade: WeightedAverageGrade;
@@ -108,13 +107,11 @@ export class Course {
   finalGrade: PercentGrade;
 
   constructor(
-    name: string,
     code: string,
     rootGrade: WeightedAverageGrade,
     finished: boolean,
     finalGrade: PercentGrade | null
   ) {
-    this.name = name;
     this.code = code;
     this.rootGrade = rootGrade;
     this.finished = finished;
@@ -123,7 +120,6 @@ export class Course {
 
   static from(json: CourseObject) {
     return new Course(
-      json.name,
       json.code,
       // @ts-ignore
       Grade.from(json.rootGrade),
@@ -154,8 +150,7 @@ export class Grade {
   name: string;
   predicted: () => number | null;
   completion: () => number;
-  type:
-    | "FractionGrade"
+  type: "FractionGrade"
     | "WeightedAverageGrade"
     | "PercentGrade"
     | "AverageGrade";
@@ -194,11 +189,10 @@ export class Grade {
 
 export type GradeObject = {
   name: string;
-  type:
-    | "FractionGrade"
-    | "WeightedAverageGrade"
-    | "PercentGrade"
-    | "AverageGrade";
+  type: "FractionGrade"
+  | "WeightedAverageGrade"
+  | "PercentGrade"
+  | "AverageGrade";
 };
 
 export class FractionGrade extends Grade {
