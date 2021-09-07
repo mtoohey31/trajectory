@@ -5,6 +5,7 @@
     DataTable,
     InlineNotification,
     NumberInput,
+    TextInput,
     Toolbar,
     ToolbarContent,
     ToolbarMenu,
@@ -44,6 +45,8 @@
             bind:value={grade.weights[row.id]}
             style="width: 5rem;"
           />
+        {:else if cell.key === "name"}
+          <TextInput bind:value={grade.grades[row.id].name} />
         {:else}
           {cell.value}
         {/if}
