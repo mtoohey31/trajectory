@@ -10,7 +10,7 @@
   import type { UserData } from "./classes";
 
   import { globalHistory } from "svelte-routing/src/history";
-  globalHistory.listen((h) => {
+  globalHistory.listen(() => {
     firstChange = true;
   });
 
