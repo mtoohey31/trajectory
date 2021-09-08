@@ -88,6 +88,7 @@
             vaultKey,
             resData.slice(32)
           );
+          // TODO: Surround this with try/catch that brings user to export and reset page
           userData = Classes.UserData.from(
             JSON.parse(dec.decode(decryptedData))
           );
