@@ -53,7 +53,7 @@
         min={0}
         step={0.25}
         bind:value={program.courses[row.id].credits}
-        style="width: 5rem;"
+        style="min-width: 5rem;"
       />
     {:else if cell.key === "GPA"}
       {(() => {
@@ -72,18 +72,33 @@
           }
         }}
       />
+    {:else if cell.key === "endDate"}
+      <DatePicker
+        datePickerType="single"
+        on:change={(e) => {
+          program.courses[row.id].endDate = e.detail.selectedDates[0];
+        }}
+        value={(() => {
+          let date = program.courses[row.id].endDate;
+          return `${
+            date.getMonth() + 1
+          }/${date.getDay()}/${date.getFullYear()}/`;
+        })()}
+      >
+        <DatePickerInput placeholder="mm/dd/yyyy" size="sm" />
+      </DatePicker>
     {:else if cell.key === "grade" && program.courses[row.id].finished}
       <NumberInput
         min={0}
         step={0.01}
         bind:value={program.courses[row.id].finalGrade.percent}
-        style="width: 5rem;"
+        style="min-width: 7rem;"
       />
     {:else if cell.key === "grade"}
       <NumberInput
         disabled
         value={program.courses[row.id].predicted()}
-        style="--cds-disabled-02: var(--cds-text-01); width: 5rem;"
+        style="--cds-disabled-02: var(--cds-text-01); min-width: 7rem;"
       />
     {:else if cell.key === "overflow"}
       <Button
@@ -147,3 +162,9 @@
     subtitle="Click the button in the top right corner and navigate to Program > Settings to input your institution's percentage to GPA conversion table."
   />
 {/if}
+
+<style>
+  :global(input.bx--date-picker__input--sm) {
+    width: 0 !important ;
+  }
+</style>
