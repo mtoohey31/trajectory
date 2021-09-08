@@ -63,7 +63,7 @@ export class Program {
   static from(json: ProgramObject) {
     return new Program(
       json.institution,
-      json.courses.map((course) => Course.from(course)),
+      json.courses.map((course: CourseObject) => Course.from(course)),
       ProgramSettings.from(json.settings)
     );
   }
