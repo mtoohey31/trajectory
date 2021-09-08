@@ -4,6 +4,8 @@
     Button,
     Checkbox,
     DataTable,
+    DatePicker,
+    DatePickerInput,
     InlineNotification,
     NumberInput,
     Search,
@@ -26,6 +28,7 @@
     { key: "credits", value: "Credits" },
     { key: "grade", value: "Grade" },
     { key: "GPA", value: "GPA" },
+    { key: "endDate", value: "End Date" },
     { key: "finished", value: "Finished" },
     { key: "overflow", empty: true },
   ]}
@@ -110,6 +113,11 @@
               new Classes.Course(
                 "",
                 0.5,
+                (() => {
+                  let date = new Date();
+                  date.setMonth(date.getMonth() + 4);
+                  return date;
+                })(),
                 new Classes.WeightedAverageGrade("", [], []),
                 false,
                 new Classes.PercentGrade("", null)

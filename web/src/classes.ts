@@ -134,6 +134,7 @@ export type GPATableItemObject = {
 export class Course {
   code: string;
   credits: number;
+  endDate: Date;
   rootGrade: WeightedAverageGrade;
   finished: boolean;
   finalGrade: PercentGrade;
@@ -141,12 +142,14 @@ export class Course {
   constructor(
     code: string,
     credits: number,
+    endDate: Date,
     rootGrade: WeightedAverageGrade,
     finished: boolean,
     finalGrade: PercentGrade | null
   ) {
     this.code = code;
     this.credits = credits;
+    this.endDate = endDate;
     this.rootGrade = rootGrade;
     this.finished = finished;
     this.finalGrade = finalGrade;
@@ -156,6 +159,7 @@ export class Course {
     return new Course(
       json.code,
       json.credits,
+      new Date(json.endDate),
       // @ts-ignore
       Grade.from(json.rootGrade),
       json.finished,
@@ -182,6 +186,7 @@ export type CourseObject = {
   name: string;
   code: string;
   credits: number;
+  endDate: string;
   rootGrade: GradeObject;
   finished: boolean;
   finalGrade: GradeObject;
