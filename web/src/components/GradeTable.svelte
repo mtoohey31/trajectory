@@ -33,7 +33,8 @@
       rows={grade.grades.map((grade, i) => {
         grade.id = i;
         let predicted = grade.predicted();
-        grade.grade = predicted !== null ? (predicted * 100).toFixed(2) + "%" : "--";
+        grade.grade =
+          predicted !== null ? (predicted * 100).toFixed(2) + "%" : "--";
         return grade;
       })}
     >
