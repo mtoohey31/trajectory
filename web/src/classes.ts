@@ -140,11 +140,13 @@ export class Course {
 
   constructor(
     code: string,
+    credits: number,
     rootGrade: WeightedAverageGrade,
     finished: boolean,
     finalGrade: PercentGrade | null
   ) {
     this.code = code;
+    this.credits = credits;
     this.rootGrade = rootGrade;
     this.finished = finished;
     this.finalGrade = finalGrade;
@@ -153,6 +155,7 @@ export class Course {
   static from(json: CourseObject) {
     return new Course(
       json.code,
+      json.credits,
       // @ts-ignore
       Grade.from(json.rootGrade),
       json.finished,

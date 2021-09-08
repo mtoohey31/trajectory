@@ -23,6 +23,7 @@
   batchExpansion
   headers={[
     { key: "code", value: "Code" },
+    { key: "credits", value: "Credits" },
     { key: "grade", value: "Grade" },
     { key: "GPA", value: "GPA" },
     { key: "finished", value: "Finished" },
@@ -43,6 +44,13 @@
       <TextInput
         bind:value={program.courses[row.id][cell.key]}
         style="width: 6rem;"
+      />
+    {:else if cell.key === "credits"}
+      <NumberInput
+        min={0}
+        step={0.25}
+        bind:value={program.courses[row.id].credits}
+        style="width: 5rem;"
       />
     {:else if cell.key === "GPA"}
       {(() => {
@@ -101,6 +109,7 @@
             program.courses.concat([
               new Classes.Course(
                 "",
+                0.5,
                 new Classes.WeightedAverageGrade("", [], []),
                 false,
                 new Classes.PercentGrade("", null)
