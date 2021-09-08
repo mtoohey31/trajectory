@@ -108,7 +108,7 @@
     </Route>
     <Route path="program">
       {#if userData}
-        <Program bind:programSettings={userData.programs[userData.lastProgram].settings} />
+        <Program bind:program={userData.programs[userData.lastProgram]} />
       {/if}
     </Route>
     <Route path="account">
