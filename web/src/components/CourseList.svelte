@@ -49,6 +49,13 @@
         bind:value={program.courses[row.id][cell.key]}
         style="width: 6rem;"
       />
+    {:else if cell.key === "GPA"}
+      {(() => {
+        let predictedGPA = program.courses[row.id].predictedGPA(
+          program.settings.GPATable
+        );
+        return predictedGPA !== null ? predictedGPA.toFixed(2) : "--";
+      })()}
     {:else if cell.key === "finished"}
       <Checkbox
         bind:checked={program.courses[row.id][cell.key]}
@@ -117,5 +124,14 @@
     kind="info"
     title="Tip:"
     subtitle="Get started by clicking Add Course."
+  />
+{/if}
+{#if program.settings.GPATable.length < 2}
+  <InlineNotification
+    lowContrast
+    hideCloseButton
+    kind="info"
+    title="Tip:"
+    subtitle="Click the button in the top right corner and navigate to Program > Settings to input your institution's percentage to GPA conversion table."
   />
 {/if}

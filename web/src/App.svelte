@@ -3,6 +3,7 @@
   import Dashboard from "./Dasbhoard.svelte";
   import Login from "./Login.svelte";
   import CreateAccount from "./CreateAccount.svelte";
+  import Program from "./Program.svelte";
   import Account from "./Account.svelte";
   import Theme from "./components/Theme.svelte";
   import Import from "./Import.svelte";
@@ -104,6 +105,11 @@
     </Route>
     <Route path="login/create">
       <CreateAccount />
+    </Route>
+    <Route path="program">
+      {#if userData}
+        <Program bind:programSettings={userData.programs[userData.lastProgram].settings} />
+      {/if}
     </Route>
     <Route path="account">
       {#if userData}

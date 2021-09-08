@@ -78,6 +78,11 @@ export class Program {
     );
   }
 
+  predictedGPA(): number | null {
+    let predicted = this.predicted() * 100
+    return this.settings.GPATable.filter((i) => i.percent < predicted).sort((a, b) => b.percent - a.percent)[0].GPA
+  }
+
   completion(): number {
     return (
       this.courses.reduce(
@@ -96,12 +101,35 @@ export type ProgramObject = {
 };
 
 export class ProgramSettings {
+  GPATable: Array<GPATableItem>;
+
+  constructor(GPATable: Array<GPATableItem>) {
+    this.GPATable = GPATable
+  }
+
   static from(json: ProgramSettingsObject) {
-    return new ProgramSettings();
+    return new ProgramSettings(json.GPATable.map((GPATableItemObject: GPATableItemObject) => new GPATableItem(GPATableItemObject.percent, GPATableItemObject.GPA)));
   }
 }
 
-export type ProgramSettingsObject = {};
+export type ProgramSettingsObject = {
+  GPATable: Array<GPATableItemObject>
+};
+
+export class GPATableItem {
+  percent: number;
+  GPA: number;
+
+  constructor(percent: number, GPA: number) {
+    this.percent = percent
+    this.GPA = GPA
+  }
+}
+
+export type GPATableItemObject = {
+  percent: number;
+  GPA: number
+}
 
 export class Course {
   code: string;
@@ -133,7 +161,13 @@ export class Course {
   }
 
   predicted(): number | null {
-    return this.rootGrade.predicted();
+    return this.finished ? this.finalGrade.predicted() : this.rootGrade.predicted();
+  }
+
+  predictedGPA(GPATable: Array<GPATableItem>): number | null {
+    let predicted = this.predicted() * 100
+    let filteredGPATable = GPATable.filter((i) => i.percent < predicted)
+    return filteredGPATable.length !== 0 ? filteredGPATable.sort((a, b) => b.percent - a.percent)[0].GPA : null
   }
 
   completion(): number {

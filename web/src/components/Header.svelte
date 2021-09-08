@@ -30,6 +30,10 @@
     {/if}
     <HeaderAction icon={UserAvatar20} bind:isOpen transition={false}>
       <HeaderPanelLinks>
+        <HeaderPanelDivider>Program</HeaderPanelDivider>
+        <HeaderPanelLink on:click={() => navigate("/program")}
+          >Settings</HeaderPanelLink
+        >
         <HeaderPanelDivider>Account</HeaderPanelDivider>
         <HeaderPanelLink on:click={() => navigate("/account")}
           >Settings</HeaderPanelLink
