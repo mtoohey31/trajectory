@@ -29,7 +29,7 @@ Next, edit the `Caddyfile` to replace `<hostname>` with the hostname you will be
 Then start, the app by running:
 
 ```sh
-docker-compose --file docker-compose.yaml up
+docker-compose up
 ```
 
 Assuming your DNS and ports are set up correctly the app should now be available on the host you specified.
