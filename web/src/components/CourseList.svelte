@@ -30,12 +30,7 @@
   ]}
   rows={searchString
     ? program.courses
-        .filter((course) => {
-          return (
-            course.name.indexOf(searchString) !== -1 ||
-            course.code.indexOf(searchString) !== -1
-          );
-        })
+        .filter((course) => course.code.indexOf(searchString) !== -1)
         .map((_, i) => {
           return { id: i };
         })
