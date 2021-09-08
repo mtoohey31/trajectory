@@ -79,28 +79,26 @@
               userData.settings.theme = themes[e.detail.selectedIndex];
             }}
           />
-          <ButtonSet style="margin-top:1rem;">
+          <ButtonSet style="margin-top: 1rem; margin-bottom: 1rem;">
             <Button on:click={() => navigate("/account/import")}
               >Import Data</Button
             >
             <Button on:click={exportData}>Export Data</Button>
           </ButtonSet>
           <h2>Delete</h2>
+          <OverflowMenu
+            style="width: auto; margin-top: 1rem; margin-bottom: 1rem;"
+          >
+            <Button slot="menu" kind="danger" icon={Delete20}
+              >Delete Account</Button
+            >
+            <OverflowMenuItem danger text="Confirm" on:click={deleteAccount} />
+          </OverflowMenu>
           <InlineNotification
             hideCloseButton
             title="Warning:"
             subtitle="This action is irreversible, please consider exporting data first."
           />
-          <OverflowMenu style="width: auto;">
-            <Button slot="menu" kind="danger" icon={Delete20}
-              >Delete Account</Button
-            >
-            <OverflowMenuItem
-              danger
-              text="Delete Account"
-              on:click={deleteAccount}
-            />
-          </OverflowMenu>
         </Column>
       </Row>
     </Grid>
