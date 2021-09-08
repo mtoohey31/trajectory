@@ -183,7 +183,6 @@ export class Course {
 }
 
 export type CourseObject = {
-  name: string;
   code: string;
   credits: number;
   endDate: string;
