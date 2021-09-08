@@ -3,4 +3,5 @@ server/target
 web/node_modules
 web/public/build
 web/.pnpm-store
+**/.pnpm-debug.log
 Caddyfile
