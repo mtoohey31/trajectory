@@ -71,7 +71,7 @@
   $: invalidPasswordText = passwordMismatch
     ? "Passwords do not match"
     : "Unknown error";
-  $: createDisabled = usernameInvalid && invalidPasswordText;
+  $: createDisabled = !enteredUsername || !password || !passwordConfirmation || usernameInvalid || passwordMismatch
 </script>
 
 <svelte:window
