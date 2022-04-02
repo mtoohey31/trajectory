@@ -42,6 +42,8 @@ export default {
     name: "app",
     file: "public/build/bundle.js",
   },
+  // Necessary for carbon charts
+  context: "window",
   plugins: [
     svelte({
       preprocess: sveltePreprocess({ sourceMap: !production }),

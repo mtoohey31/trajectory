@@ -11,7 +11,7 @@ To start the development version of the project, you only need to run three comm
 ```sh
 git clone https://github.com/mtoohey31/trajectory
 cd trajectory
-docker-compose --file docker-compose.dev.yaml up
+docker-compose --file docker-compose-dev.yaml up
 ```
 
 ### Production
@@ -21,7 +21,7 @@ To start the production version of the project, begin by running the following c
 ```sh
 git clone https://github.com/mtoohey31/trajectory
 cd trajectory
-cp Caddyfile.example Caddyfile
+cp Caddyfile-example Caddyfile
 ```
 
 Next, edit the `Caddyfile` to replace `<hostname>` with the hostname you will be serving the app on. Caddy should automatically negotiate TLS certificates once the app is started, but if you run into issues, visit [Caddy's documentation](https://caddyserver.com/docs/quick-starts/https).

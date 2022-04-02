@@ -1,4 +1,4 @@
-FROM rust
+FROM rust:latest
 
 WORKDIR /usr/src/trajectory-server
 COPY . .
